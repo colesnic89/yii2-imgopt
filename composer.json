@@ -1,24 +1,45 @@
 {
-    "name": "pelock/yii2-imgopt",
-    "version": "1.3.0",
-    "description": "Image optimization widget for Yii2 Framework with auto WebP/AVIF image format generation from PNG/JPG files.",
-    "type": "yii2-extension",
-    "keywords": ["image", "optimization", "yii2", "webp", "avif", "jpg", "png", "generator"],
-    "license": "Apache-2.0",
-    "authors": [
-        {
-            "name": "Bartosz Wójcik",
-            "email": "support@pelock.com",
-            "homepage": "https://www.pelock.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.4.0",
-        "yiisoft/yii2": ">=2.0.4"
+  "name": "colesnic89/yii2-imgopt",
+  "version": "1.3.0",
+  "description": "Image optimization widget for Yii2 Framework with auto WebP/AVIF image format generation from PNG/JPG files.",
+  "type": "yii2-extension",
+  "keywords": [
+    "image",
+    "optimization",
+    "yii2",
+    "webp",
+    "avif",
+    "jpg",
+    "png",
+    "generator"
+  ],
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Bartosz Wójcik",
+      "email": "support@pelock.com",
+      "homepage": "https://www.pelock.com"
     },
-    "autoload": {
-            "psr-4": {
-                    "PELock\\ImgOpt\\": "src/"
-            }
+    {
+      "name": "Maxim Colesnic",
+      "email": "colesnic89@gmail.com"
     }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "yiisoft/yii2": ">=2.0.38",
+    "yidas/yii2-bower-asset": "*",
+    "ext-gd": "*",
+    "ext-exif": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "PELock\\ImgOpt\\": "src/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true
+    }
+  }
 }
