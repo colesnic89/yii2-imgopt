@@ -213,7 +213,7 @@ class ImgOpt extends Widget
         $short_file_info = pathinfo($img);
         $file_info = pathinfo($img_full_path);
 
-        $image_type = exif_imagetype($img);
+        $image_type = exif_imagetype($img_full_path);
 
         $output_filename_with_extension = $short_file_info["filename"] . $file_extension;
 
