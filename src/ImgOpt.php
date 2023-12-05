@@ -377,7 +377,7 @@ class ImgOpt extends Widget
             $html = "<picture>";
 
             if ($this->_avif) $html .= Html::tag("source", [], ["srcset" => $this->_avif, "type" => "image/avif"]);
-            if ($this->_webp) $html .= Html::tag("source", [], ["srcset" => str_replace(['/app/web', '/var/www/santeh'], '', $this->_webp), "type" => "image/webp"]);
+            if ($this->_webp) $html .= Html::tag("source", [], ["srcset" => str_replace(['/app/web', '/var/www/santeh/web'], '', $this->_webp), "type" => "image/webp"]);
 
             // fallback image (unoptimized)
             $html .= $img;
