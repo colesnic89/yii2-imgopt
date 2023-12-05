@@ -1,6 +1,6 @@
 {
   "name": "colesnic89/yii2-imgopt",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Image optimization widget for Yii2 Framework with auto WebP/AVIF image format generation from PNG/JPG files.",
   "type": "yii2-extension",
   "keywords": [
