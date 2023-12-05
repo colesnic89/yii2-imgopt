@@ -103,6 +103,8 @@ class ImgOpt extends Widget
      */
     private $_avif = null;
 
+    private $_w = null;
+
     /**
      * @var string image alternative description used as alt="description" property (optional)
      */
@@ -137,6 +139,9 @@ class ImgOpt extends Widget
      * @var string image width used as width="value" (optional)
      */
     public $width;
+
+    /** @var int|null */
+    public $resizeWidth;
 
     /**
      * @var string Lightbox attribute data-lightbox="image-1" etc. (optional)
@@ -208,6 +213,26 @@ class ImgOpt extends Widget
 
         if ($original_file_size === 0) {
             return null;
+        }
+
+        if ($this->resizeWidth) {
+            $imageFile = new \SplFileInfo($img_full_path);
+            $fileName = $imageFile->getBasename('.' . $imageFile->getExtension());
+            $fileDirectory = $imageFile->getPath();
+
+            $img = $fileDirectory . DIRECTORY_SEPARATOR . "w$this->resizeWidth" . DIRECTORY_SEPARATOR . $fileName . '.' . $imageFile->getExtension();
+
+            if (!is_dir(dirname($img)) && !file_exists(dirname($img))) {
+                mkdir(dirname($img));
+            }
+
+            if (!file_exists($img)) {
+                $image = new ImageResize($img_full_path);
+                $image->resizeToWidth($this->resizeWidth, true);
+                $image->save($img);
+            }
+
+            $img_full_path = $img;
         }
 
         // get path details (full path & short path details)
@@ -295,15 +320,11 @@ class ImgOpt extends Widget
     {
         parent::init();
 
-        $web_root = Yii::getAlias('@webroot');
-        $img_full_path = $web_root . $this->src;
-
-        echo $img_full_path;
-
         try {
             $this->_webp = $this->get_or_convert_to_dest_format($this->src, self::DISABLE_WEBP, ".webp", "imagewebp", (self::RECREATE_ALL == true || $this->recreate == true));
-            $this->_avif = $this->get_or_convert_to_dest_format($this->src, self::DISABLE_AVIF, ".avif", "imageavif", (self::RECREATE_ALL == true || $this->recreate == true));
+            // $this->_avif = $this->get_or_convert_to_dest_format($this->src, self::DISABLE_AVIF, ".avif", "imageavif", (self::RECREATE_ALL == true || $this->recreate == true));
         } catch (\Throwable $exception) {
+            //throw $exception;
         }
 
 
@@ -326,8 +347,21 @@ class ImgOpt extends Widget
 
     public function run()
     {
+        $src = $this->src;
+
+        if ($this->resizeWidth) {
+            $parts = explode('/', $this->src);
+            $fileName = end($parts);
+            unset($parts[count($parts) - 1]);
+            $parts[] = "w$this->resizeWidth";
+            $parts[] = $fileName;
+            if (file_exists(Yii::getAlias('@webroot') . implode('/', $parts))) {
+                $src = implode('/', $parts);
+            }
+        }
+
         // our unoptimized image (include all the possible attributes)
-        $img = Html::img($this->src, [
+        $img = Html::img($src, [
             "class" => $this->css,
             "style" => $this->style,
             "alt" => $this->alt,
@@ -343,7 +377,7 @@ class ImgOpt extends Widget
             $html = "<picture>";
 
             if ($this->_avif) $html .= Html::tag("source", [], ["srcset" => $this->_avif, "type" => "image/avif"]);
-            if ($this->_webp) $html .= Html::tag("source", [], ["srcset" => $this->_webp, "type" => "image/webp"]);
+            if ($this->_webp) $html .= Html::tag("source", [], ["srcset" => str_replace('/app/web', '', $this->_webp), "type" => "image/webp"]);
 
             // fallback image (unoptimized)
             $html .= $img;
