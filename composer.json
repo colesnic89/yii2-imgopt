@@ -27,9 +27,11 @@
   ],
   "require": {
     "php": ">=7.1.0",
+    "yidas/yii2-bower-asset": "*",
     "yiisoft/yii2": ">=2.0.38",
     "ext-gd": "*",
-    "ext-exif": "*"
+    "ext-exif": "*",
+    "gumlet/php-image-resize": "^2.0"
   },
   "autoload": {
     "psr-4": {

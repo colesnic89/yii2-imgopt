@@ -10,6 +10,7 @@ namespace PELock\ImgOpt;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
+use Gumlet\ImageResize;
 
 /**
  * Image optimization widget for Yii2 Framework with auto WebP & AVIF image format generation from PNG/JPG files.
@@ -293,6 +294,11 @@ class ImgOpt extends Widget
     public function init()
     {
         parent::init();
+
+        $web_root = Yii::getAlias('@webroot');
+        $img_full_path = $web_root . $this->src;
+
+        echo $img_full_path;
 
         try {
             $this->_webp = $this->get_or_convert_to_dest_format($this->src, self::DISABLE_WEBP, ".webp", "imagewebp", (self::RECREATE_ALL == true || $this->recreate == true));
